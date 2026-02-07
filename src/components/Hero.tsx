@@ -1,4 +1,5 @@
-import { Code2, Github, Linkedin, Mail } from 'lucide-react';
+import { Code2, Github, Mail } from 'lucide-react';
+import Magnetic from './Magnetic';
 
 export default function Hero() {
   const scrollToSection = (id: string) => {
@@ -19,38 +20,43 @@ export default function Hero() {
         </h1>
 
         <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-          Crafting elegant solutions to complex problems.<br />
+          Crafting elegant solutions to complex problems.
+          <br />
           Specialized in modern web technologies and scalable applications.
         </p>
 
-        <div className="flex gap-4 justify-center mb-12">
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-all hover:scale-110"
-          >
-            <Github className="w-6 h-6 text-gray-300" />
-          </a>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-all hover:scale-110"
-          >
-            <Linkedin className="w-6 h-6 text-gray-300" />
-          </a>
-          <button
-            onClick={() => scrollToSection('contact')}
-            className="p-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-all hover:scale-110"
-          >
-            <Mail className="w-6 h-6 text-gray-300" />
-          </button>
+        <div className="flex gap-4 justify-center mb-12 items-center flex-wrap">
+          <Magnetic>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex p-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-colors hover:scale-110"
+            >
+              <Github className="w-6 h-6 text-gray-300" />
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="inline-flex p-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-colors hover:scale-110"
+            >
+              <Mail className="w-6 h-6 text-gray-300" />
+            </button>
+          </Magnetic>
+          <Magnetic>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="inline-flex px-8 py-4 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+            >
+              Contact Me
+            </button>
+          </Magnetic>
         </div>
 
         <button
           onClick={() => scrollToSection('about')}
-          className="px-8 py-4 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+          className="px-8 py-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 text-gray-300 font-medium hover:bg-white/10 transition-all"
         >
           View My Work
         </button>

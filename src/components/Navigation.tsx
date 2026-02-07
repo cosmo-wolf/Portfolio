@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useActiveSection } from '../hooks/useActiveSection';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const activeId = useActiveSection();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -23,7 +25,7 @@ export default function Navigation() {
     { label: 'About', id: 'about' },
     { label: 'Skills', id: 'skills' },
     { label: 'Projects', id: 'projects' },
-    { label: 'Contact', id: 'contact' }
+    { label: 'Contact', id: 'contact' },
   ];
 
   return (
@@ -44,15 +46,31 @@ export default function Navigation() {
           </button>
 
           <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-              >
-                {item.label}
-              </button>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeId === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="relative font-medium py-2"
+                >
+                  <span
+                    className={`transition-colors ${
+                      isActive ? 'text-cyan-400' : 'text-gray-300 hover:text-cyan-400'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-pill"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           <button
@@ -75,7 +93,11 @@ export default function Navigation() {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="block w-full text-left px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all"
+                className={`block w-full text-left px-4 py-3 rounded-lg transition-all ${
+                  activeId === item.id
+                    ? 'text-cyan-400 bg-cyan-500/10'
+                    : 'text-gray-300 hover:text-cyan-400 hover:bg-white/5'
+                }`}
               >
                 {item.label}
               </button>

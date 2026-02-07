@@ -1,15 +1,29 @@
 import { useState } from 'react';
-import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Send, CheckCircle, AlertCircle, Copy, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
+
+const EMAIL = 'harsh2412pro@gmail.com';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setErrorMessage('Copy failed');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,15 +31,13 @@ export default function Contact() {
     setErrorMessage('');
 
     try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            message: formData.message
-          }
-        ]);
+      const { error } = await supabase.from('contact_submissions').insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        },
+      ]);
 
       if (error) throw error;
 
@@ -42,9 +54,9 @@ export default function Contact() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -151,13 +163,47 @@ export default function Contact() {
 
         <div className="mt-12 text-center">
           <p className="text-gray-400 mb-4">Or reach out directly:</p>
-          <div className="flex justify-center gap-6">
+          <div className="flex justify-center items-center gap-3 flex-wrap">
             <a
-              href="mailto:hello@example.com"
+              href={`mailto:${EMAIL}`}
               className="text-cyan-400 hover:text-cyan-300 transition-colors"
             >
-              hello@example.com
+              {EMAIL}
             </a>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={copyToClipboard}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 transition-all"
+                aria-label="Copy email"
+              >
+                <AnimatePresence mode="wait">
+                  {copied ? (
+                    <motion.span
+                      key="check"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-2 text-green-400"
+                    >
+                      <Check className="w-4 h-4" />
+                      Copied!
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="copy"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-2"
+                    >
+                      <Copy className="w-4 h-4" />
+                      Copy
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </button>
+            </div>
           </div>
         </div>
       </div>

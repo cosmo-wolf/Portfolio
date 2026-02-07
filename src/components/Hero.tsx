@@ -1,7 +1,7 @@
 import { Code2, Github } from 'lucide-react';
 import Magnetic from './Magnetic';
 
-const GITHUB_URL = 'https://github.com/harsh2412pro';
+const GITHUB_URL = 'https://github.com/harshprogrmaer';
 const EMAIL = 'harsh2412pro@gmail.com';
 
 export default function Hero() {
@@ -50,7 +50,7 @@ export default function Hero() {
         </div>
 
         <button
-          onClick={() => scrollToSection('about')}
+          onClick={() => scrollToSection('featured-projects')}
           className="px-8 py-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 text-gray-300 font-medium hover:bg-white/10 transition-all"
         >
           View My Work

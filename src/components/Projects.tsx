@@ -79,7 +79,7 @@ function TiltCard({
 
 export default function Projects() {
   return (
-    <section id="projects" className="min-h-screen flex items-center justify-center px-4 py-20">
+    <section id="featured-projects" className="min-h-screen flex items-center justify-center px-4 py-20">
       <div className="max-w-6xl mx-auto w-full">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -126,13 +126,14 @@ export default function Projects() {
                     ))}
                   </div>
 
+                  {/* Placeholder links — replace href with repo/demo URLs when ready */}
                   <div className="flex gap-3">
                     <a
                       href="#"
                       className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-sm text-gray-300"
                     >
                       <Github className="w-4 h-4" />
-                      Code
+                      Source Code
                     </a>
                     <a
                       href="#"

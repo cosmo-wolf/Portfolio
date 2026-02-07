@@ -1,16 +1,23 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 const DOT_SIZE = 6;
 const TRAIL_SIZE = 32;
-const TRAIL_SMOOTH = 0.12;
+
+/** Spring for trailing circle: buttery smooth, no sharp feel */
+const cursorSpring = { stiffness: 150, damping: 30 };
 
 export default function SpotlightCursor() {
-  const positionRef = useRef({ x: 0, y: 0 });
   const [position, setPosition] = useState({ x: -1000, y: -1000 });
-  const trailRef = useRef({ x: -1000, y: -1000 });
-  const [trail, setTrail] = useState({ x: -1000, y: -1000 });
   const [isVisible, setIsVisible] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
+
+  const trailX = useMotionValue(-1000);
+  const trailY = useMotionValue(-1000);
+  const trailXSpring = useSpring(trailX, cursorSpring);
+  const trailYSpring = useSpring(trailY, cursorSpring);
+  const trailDisplayX = useTransform(trailXSpring, (v) => v - TRAIL_SIZE / 2);
+  const trailDisplayY = useTransform(trailYSpring, (v) => v - TRAIL_SIZE / 2);
 
   useEffect(() => {
     setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -20,8 +27,9 @@ export default function SpotlightCursor() {
     if (isTouch) return;
 
     const handleMove = (e: MouseEvent) => {
-      positionRef.current = { x: e.clientX, y: e.clientY };
       setPosition({ x: e.clientX, y: e.clientY });
+      trailX.set(e.clientX);
+      trailY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
     };
 
@@ -39,31 +47,7 @@ export default function SpotlightCursor() {
       document.removeEventListener('mouseenter', handleEnter);
       document.body.classList.remove('cursor-none');
     };
-  }, [isTouch, isVisible]);
-
-  // Single RAF loop: trailing circle lerps toward cursor for smooth float
-  useEffect(() => {
-    if (isTouch) return;
-
-    let rafId: number;
-
-    const updateTrail = () => {
-      const pos = positionRef.current;
-      const tx = trailRef.current.x;
-      const ty = trailRef.current.y;
-      const dx = pos.x - tx;
-      const dy = pos.y - ty;
-      trailRef.current = {
-        x: tx + dx * TRAIL_SMOOTH,
-        y: ty + dy * TRAIL_SMOOTH,
-      };
-      setTrail({ ...trailRef.current });
-      rafId = requestAnimationFrame(updateTrail);
-    };
-
-    rafId = requestAnimationFrame(updateTrail);
-    return () => cancelAnimationFrame(rafId);
-  }, [isTouch]);
+  }, [isTouch, isVisible, trailX, trailY]);
 
   if (isTouch) return null;
 
@@ -80,16 +64,16 @@ export default function SpotlightCursor() {
           transition: 'opacity 0.15s ease-out',
         }}
       />
-      {/* Trailing circle - smooth, floating behind */}
-      <div
+      {/* Trailing circle - Framer Motion spring (stiffness 150, damping 30) for smooth follow */}
+      <motion.div
         className="pointer-events-none fixed left-0 top-0 z-[9998] rounded-full border border-white/30 bg-white/5"
         style={{
           width: TRAIL_SIZE,
           height: TRAIL_SIZE,
-          transform: `translate(${trail.x - TRAIL_SIZE / 2}px, ${trail.y - TRAIL_SIZE / 2}px)`,
+          x: trailDisplayX,
+          y: trailDisplayY,
           opacity: isVisible ? 1 : 0,
           transition: 'opacity 0.2s ease-out',
-          willChange: 'transform',
         }}
       />
     </>

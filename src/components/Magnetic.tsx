@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { smoothSpring } from '../lib/motion';
 
 const MAGNETIC_STRENGTH = 0.35;
 const MAGNETIC_RADIUS = 120;
@@ -13,9 +14,8 @@ export default function Magnetic({ children, className = '' }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const spring = { type: 'spring' as const, stiffness: 200, damping: 20 };
-  const xSpring = useSpring(x, spring);
-  const ySpring = useSpring(y, spring);
+  const xSpring = useSpring(x, smoothSpring);
+  const ySpring = useSpring(y, smoothSpring);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;

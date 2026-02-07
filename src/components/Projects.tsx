@@ -1,31 +1,32 @@
 import { useRef } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { ExternalLink, Github } from 'lucide-react';
+import { smoothSpring } from '../lib/motion';
 
 const projects = [
   {
-    title: 'E-Commerce Platform',
+    title: 'AI-Powered Content Creator',
     description:
-      'Full-featured online shopping platform with payment integration, inventory management, and admin dashboard.',
-    tech: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
+      'A tool for generating web content using LLMs. Streamlined workflow for drafts, edits, and publishing.',
+    tech: ['React', 'TypeScript', 'OpenAI', 'Node.js'],
+    image:
+      'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Modern E-Commerce UI',
+    description:
+      'A fast, responsive shopping interface with smooth animations. Clean product browsing and checkout flow.',
+    tech: ['React', 'Tailwind', 'Framer Motion'],
     image:
       'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
   {
-    title: 'Task Management App',
+    title: 'Interactive Dashboard',
     description:
-      'Collaborative project management tool with real-time updates, team chat, and advanced analytics.',
-    tech: ['Next.js', 'TypeScript', 'Supabase', 'Tailwind'],
+      'A data-focused UI built with React and TypeScript. Real-time charts, filters, and export options.',
+    tech: ['React', 'TypeScript', 'Charts', 'API'],
     image:
       'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
-  },
-  {
-    title: 'Social Media Dashboard',
-    description:
-      'Analytics dashboard for managing multiple social media accounts with scheduling and reporting features.',
-    tech: ['Vue.js', 'Python', 'MongoDB', 'Redis'],
-    image:
-      'https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
 ];
 
@@ -39,7 +40,6 @@ function TiltCard({
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0.5);
   const y = useMotionValue(0.5);
-  const spring = { stiffness: 300, damping: 30 };
   const rotateX = useTransform(y, [0, 1], [8, -8]);
   const rotateY = useTransform(x, [0, 1], [-8, 8]);
 
@@ -85,6 +85,7 @@ export default function Projects() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={smoothSpring}
           className="text-5xl font-bold mb-16 text-center bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text"
         >
           Featured Projects
@@ -97,7 +98,7 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ ...smoothSpring, delay: index * 0.1 }}
                 className="h-full rounded-2xl overflow-hidden border border-white/10 bg-white/[0.07] backdrop-blur-xl shadow-2xl shadow-black/20"
                 style={{ transformStyle: 'preserve-3d' }}
               >

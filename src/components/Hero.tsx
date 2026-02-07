@@ -1,5 +1,8 @@
-import { Code2, Github, Mail } from 'lucide-react';
+import { Code2, Github } from 'lucide-react';
 import Magnetic from './Magnetic';
+
+const GITHUB_URL = 'https://github.com/harsh2412pro';
+const EMAIL = 'harsh2412pro@gmail.com';
 
 export default function Hero() {
   const scrollToSection = (id: string) => {
@@ -28,7 +31,7 @@ export default function Hero() {
         <div className="flex gap-4 justify-center mb-12 items-center flex-wrap">
           <Magnetic>
             <a
-              href="https://github.com"
+              href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex p-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-colors hover:scale-110"
@@ -37,20 +40,12 @@ export default function Hero() {
             </a>
           </Magnetic>
           <Magnetic>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="inline-flex p-4 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-colors hover:scale-110"
-            >
-              <Mail className="w-6 h-6 text-gray-300" />
-            </button>
-          </Magnetic>
-          <Magnetic>
-            <button
-              onClick={() => scrollToSection('contact')}
+            <a
+              href={`mailto:${EMAIL}`}
               className="inline-flex px-8 py-4 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
             >
-              Contact Me
-            </button>
+              Email Me
+            </a>
           </Magnetic>
         </div>
 

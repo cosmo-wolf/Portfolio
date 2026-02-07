@@ -1,29 +1,30 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Code, Database, Layers, Smartphone } from 'lucide-react';
+import { smoothSpring } from '../lib/motion';
 
 const skillCategories = [
   {
     icon: Code,
     title: 'Frontend',
     color: 'cyan',
-    value: 92,
-    level: 'Expert',
+    value: 88,
+    level: 'Proficient',
     skills: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js', 'Vue.js'],
   },
   {
     icon: Layers,
     title: 'Backend',
     color: 'blue',
-    value: 88,
-    level: 'Expert',
+    value: 85,
+    level: 'Advanced',
     skills: ['Node.js', 'Python', 'REST APIs', 'GraphQL', 'Express'],
   },
   {
     icon: Database,
     title: 'Database',
     color: 'purple',
-    value: 85,
+    value: 82,
     level: 'Advanced',
     skills: ['PostgreSQL', 'MongoDB', 'Supabase', 'Redis', 'Prisma'],
   },
@@ -31,11 +32,13 @@ const skillCategories = [
     icon: Smartphone,
     title: 'Tools & Others',
     color: 'pink',
-    value: 82,
+    value: 80,
     level: 'Advanced',
     skills: ['Git', 'Docker', 'AWS', 'CI/CD', 'Jest'],
   },
 ];
+
+const LANGUAGE_EXCELLENCE_PERCENT = 87;
 
 const colorMap = {
   cyan: { stroke: 'rgb(34, 211, 238)', glow: 'rgba(34, 211, 238, 0.5)', bg: 'bg-cyan-500/10', text: 'text-cyan-400' },
@@ -72,20 +75,12 @@ function CircularGauge({
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
+      transition={smoothSpring}
       className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-all"
     >
       <div className="flex flex-col items-center">
         <div className="relative mb-4" style={{ width: size, height: size }}>
           <svg width={size} height={size} className="-rotate-90">
-            <defs>
-              <filter id={`glow-${colorKey}`}>
-                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
             <circle
               cx={size / 2}
               cy={size / 2}
@@ -106,7 +101,7 @@ function CircularGauge({
               strokeDashoffset={circumference - (value / 100) * circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={inView ? { strokeDashoffset: circumference - (value / 100) * circumference } : {}}
-              transition={{ duration: 1.2, ease: 'easeOut' }}
+              transition={smoothSpring}
               style={{
                 filter: `drop-shadow(0 0 6px ${colors.glow})`,
               }}
@@ -143,10 +138,38 @@ export default function Skills() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={smoothSpring}
           className="text-5xl font-bold mb-16 text-center bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text"
         >
           Skills & Technologies
         </motion.h2>
+
+        {/* Language Excellence bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={smoothSpring}
+          className="mb-12 p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-lg font-medium text-white">Language Excellence</span>
+            <span className="text-sm text-gray-400">Room to grow</span>
+          </div>
+          <div className="h-3 rounded-full bg-white/10 overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: `${LANGUAGE_EXCELLENCE_PERCENT}%` }}
+              viewport={{ once: true }}
+              transition={smoothSpring}
+              className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500"
+              style={{ boxShadow: '0 0 20px rgba(34, 211, 238, 0.4)' }}
+            />
+          </div>
+          <p className="mt-2 text-sm text-gray-400">
+            Strong foundation with consistent learning — currently around {LANGUAGE_EXCELLENCE_PERCENT}%.
+          </p>
+        </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {skillCategories.map((category) => (

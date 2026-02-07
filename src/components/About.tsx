@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { smoothSpring } from '../lib/motion';
 import {
   User,
   Briefcase,
@@ -14,7 +15,7 @@ import {
 } from 'lucide-react';
 
 const ABOUT_TEXT =
-  "I'm a self-taught developer with over 2 years of experience building web applications. I turned my curiosity into code—learning from documentation, courses, and countless hours of practice. I love turning ideas into reality through clean, efficient code and am passionate about full-stack development, API design, and creating scalable, maintainable solutions.";
+  'I am a dedicated self-taught developer with 2+ years of experience. I focus on building practical, high-performance web applications using modern AI tools.';
 
 const TECH_ICONS = [
   { Icon: Code2, name: 'React' },
@@ -71,6 +72,7 @@ export default function About() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={smoothSpring}
           className="text-5xl font-bold mb-16 text-center bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text"
         >
           About Me
@@ -83,6 +85,7 @@ export default function About() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
+            transition={smoothSpring}
             className="md:col-span-2 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden flex items-center justify-center p-6"
           >
             <div className="flex items-center gap-4">
@@ -99,6 +102,7 @@ export default function About() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={smoothSpring}
             className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 hover:bg-white/10 transition-colors"
           >
             <div className="mb-3 p-3 rounded-lg bg-cyan-500/10 inline-block">
@@ -115,6 +119,7 @@ export default function About() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={smoothSpring}
             className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 hover:bg-white/10 transition-colors"
           >
             <div className="mb-3 p-3 rounded-lg bg-blue-500/10 inline-block">
@@ -131,6 +136,7 @@ export default function About() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
+            transition={smoothSpring}
             className="md:col-span-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 md:p-8"
           >
             <p className="text-gray-300 leading-relaxed text-lg md:text-xl">
@@ -143,6 +149,7 @@ export default function About() {
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
+            transition={smoothSpring}
             className="md:col-span-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-8"
           >
             <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
@@ -156,7 +163,7 @@ export default function About() {
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.06 }}
+                  transition={{ ...smoothSpring, delay: i * 0.06 }}
                   whileHover={{ y: -8, scale: 1.1 }}
                   className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-colors cursor-default"
                 >

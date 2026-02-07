@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useActiveSection } from '../hooks/useActiveSection';
+import { smoothSpring } from '../lib/motion';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -65,7 +66,7 @@ export default function Navigation() {
                     <motion.div
                       layoutId="nav-pill"
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      transition={smoothSpring}
                     />
                   )}
                 </button>
